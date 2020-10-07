@@ -20,8 +20,8 @@ class CreateStepsTable extends Migration
       $table->string('title')->nullable();
       $table->integer('order')->unsigned()->index();
       $table->string('language')->nullable();
-      $table->string('code')->nullable();
-      $table->string('body')->nullable();
+      $table->text('code')->nullable();
+      $table->text('body')->nullable();
       $table->timestamps();
 
 

@@ -16,9 +16,9 @@ class SnippetController extends Controller
     //middleware
   }
 
-  public function index()
+  public function index(Request $request)
   {
-    return SnippetLightResource::collection(Snippet::get());
+    return SnippetLightResource::collection($request->user()->snippets()->get());
   }
 
   public function show(Snippet $snippet, Request $request)
@@ -30,9 +30,7 @@ class SnippetController extends Controller
 
   public function store(Request $request)
   {
-    $snippet = Snippet::create([
-      'user_id' => 1,
-    ]);
+    $snippet = $request->user()->snippets()->create();
     return new SnippetResource($snippet);
   }
 

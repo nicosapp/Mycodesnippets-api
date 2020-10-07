@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,11 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-  return $request->user();
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+  return new UserResource($request->user());
 });
 
-Route::group(['prefix' => 'snippets', 'namespace' => 'Snippets'], function () {
+Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+  Route::post('signup', 'SignUpController');
+
+  // Route::get('email/verify/{numbers}', 'ApiVerificationController@verify')->name('verificationapi.verify');
+  // Route::get('email/resend', 'ApiVerificationController@resend')->name('verificationapi.resend');
+});
+
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'snippets', 'namespace' => 'Snippets'], function () {
   Route::post('', 'SnippetController@store');
   Route::get('', 'SnippetController@index');
   Route::get('{snippet}', 'SnippetController@show');
@@ -28,8 +36,7 @@ Route::group(['prefix' => 'snippets', 'namespace' => 'Snippets'], function () {
   Route::delete('{snippet}/steps/{step}', 'StepController@destroy');
 });
 
-Route::group(['prefix' => 'steps', 'namespace' => 'Snippets'], function () {
-
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'steps', 'namespace' => 'Snippets'], function () {
   Route::get('{step}', 'StepController@show');
   Route::patch('{step}', 'StepController@update');
 });

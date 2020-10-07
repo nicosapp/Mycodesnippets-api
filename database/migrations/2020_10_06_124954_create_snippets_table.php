@@ -18,10 +18,8 @@ class CreateSnippetsTable extends Migration
       $table->bigInteger('user_id')->length(20)->unsigned()->index();
       $table->uuid('uuid');
       $table->string('title')->nullable();
-      $table->string('description')->nullable();
+      $table->text('description')->nullable();
       $table->timestamps();
-
-      // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
     });
   }
 

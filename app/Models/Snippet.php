@@ -41,4 +41,9 @@ class Snippet extends Model
   {
     return $this->hasMany(Step::class)->orderBy('order', 'asc');
   }
+
+  public function user()
+  {
+    return $this->belongsTo(User::class);
+  }
 }
