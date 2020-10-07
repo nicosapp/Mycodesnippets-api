@@ -6,6 +6,7 @@ use App\Models\Snippet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SnippetResource;
+use App\Http\Resources\SnippetLightResource;
 
 class SnippetController extends Controller
 {
@@ -17,7 +18,7 @@ class SnippetController extends Controller
 
   public function index()
   {
-    dd('test');
+    return SnippetLightResource::collection(Snippet::get());
   }
 
   public function show(Snippet $snippet, Request $request)

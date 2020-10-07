@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'snippets', 'namespace' => 'Snippets'], function () {
   Route::post('', 'SnippetController@store');
+  Route::get('', 'SnippetController@index');
   Route::get('{snippet}', 'SnippetController@show');
   Route::patch('{snippet}', 'SnippetController@update');
   Route::delete('{snippet}', 'SnippetController@destroy');
