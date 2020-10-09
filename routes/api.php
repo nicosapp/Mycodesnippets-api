@@ -15,14 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return new UserResource($request->user());
+});
+
+Route::get('sanctum/csrf-cookie', function () {
+  return redirect('sanctum/csrf-cookie');
 });
 
 Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   Route::post('signup', 'SignUpController');
   Route::post('signin', 'SignInController');
-  Route::post('signout', 'SignOutController');
+  Route::post('signout', 'SignOutController@logout');
 
   // Route::get('email/verify/{numbers}', 'ApiVerificationController@verify')->name('verificationapi.verify');
   // Route::get('email/resend', 'ApiVerificationController@resend')->name('verificationapi.resend');

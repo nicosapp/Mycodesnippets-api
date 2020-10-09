@@ -42,6 +42,15 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
+  public static function boot()
+  {
+    parent::boot();
+
+    static::created(function (User $user) {
+      $user->infos()->create();
+    });
+  }
+
   public function setPasswordAttribute($password)
   {
     if (trim($password) === '') {
@@ -53,5 +62,10 @@ class User extends Authenticatable
   public function snippets()
   {
     return $this->hasMany(Snippet::class);
+  }
+
+  public function infos()
+  {
+    return $this->hasOne(UserInfo::class);
   }
 }

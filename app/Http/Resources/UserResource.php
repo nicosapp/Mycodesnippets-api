@@ -17,7 +17,15 @@ class UserResource extends JsonResource
     return  [
       'id' => $this->id,
       'email' => $this->email,
-      'name' => $this->name
+      'name' => $this->name,
+      $this->mergeWhen(
+        $this->infos()->exists(),
+        [
+          'firstname' => $this->infos->firstname,
+          'lastname' => $this->infos->lastname,
+          'locale' => $this->infos->locale
+        ]
+      )
     ];
   }
 }
