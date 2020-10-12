@@ -49,3 +49,9 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'steps', 'namespace' =
   Route::get('{step}', 'StepController@show');
   Route::patch('{step}', 'StepController@update');
 });
+
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'users', 'namespace' => 'Users'], function () {
+  Route::get('{user}', 'UserController@show');
+  Route::patch('{user}', 'UserController@update');
+  Route::patch('{user}/password', 'UserController@changePassword');
+});

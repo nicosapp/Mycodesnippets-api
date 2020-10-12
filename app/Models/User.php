@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -42,12 +43,20 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
+  public function getRouteKeyName()
+  {
+    return 'uuid';
+  }
+
   public static function boot()
   {
     parent::boot();
 
     static::created(function (User $user) {
       $user->infos()->create();
+    });
+    static::creating(function (User $user) {
+      $user->uuid = Str::uuid();
     });
   }
 

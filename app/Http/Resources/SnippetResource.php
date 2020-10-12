@@ -20,7 +20,11 @@ class SnippetResource extends JsonResource
       'description' => $this->description,
       'is_public' => (bool) $this->is_public,
       'steps_count' => $this->steps->count(),
-      'steps' => ['data' => StepResource::collection($this->steps)]
+      'steps' => ['data' => StepResource::collection($this->steps)],
+      'author' => [
+        'name' => $this->user->name,
+        'uuid' => $this->user->uuid
+      ],
     ];
   }
 }
