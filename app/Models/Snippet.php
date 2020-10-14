@@ -67,6 +67,11 @@ class Snippet extends Model implements HasMedia
     return $builder->where('is_public', true);
   }
 
+  public function isPublic()
+  {
+    return $this->is_public;
+  }
+
   public function registerMediaConversions(?Media $media = null): void
   {
     $this->thumbnail();

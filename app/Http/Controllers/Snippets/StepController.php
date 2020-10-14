@@ -14,23 +14,22 @@ class StepController extends Controller
 {
   public function __construct()
   {
-    //middleware
-  }
-
-  public function index()
-  {
-    dd('test');
+    $this->middleware('auth:sanctum', ['except' => ['show']]);
   }
 
   public function show(Step $step, Request $request)
   {
     //authorize
+    $this->authorize('show', $step->snippet);
 
     return new StepResource($step);
   }
 
   public function store(Snippet $snippet, Request $request)
   {
+    //authorize
+    $this->authorize('store', $snippet);
+
     $step = $snippet->steps()->create(array_merge(
       $request->only('title', 'body'),
       [
@@ -56,6 +55,7 @@ class StepController extends Controller
   public function update(Step $step, Request $request)
   {
     //authorize
+    $this->authorize('update', $step->snippet);
 
     //validate
     $this->validate($request, [
@@ -69,6 +69,8 @@ class StepController extends Controller
   public function destroy(Snippet $snippet, Step $step, Request $request)
   {
     //authorize
+    $this->authorize('destroy', $snippet);
+
     if ($snippet->steps->count() === 1) {
       return response(null, 400);
     }

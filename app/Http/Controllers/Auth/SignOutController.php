@@ -15,4 +15,12 @@ class SignOutController extends Controller
   {
     $this->middleware('guest')->except('logout');
   }
+
+  /**
+   * 
+   */
+  public function __invoke()
+  {
+    Auth::logout();
+  }
 }

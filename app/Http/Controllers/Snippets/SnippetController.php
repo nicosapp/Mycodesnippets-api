@@ -21,40 +21,30 @@ class SnippetController extends Controller
 
   public function __construct()
   {
-    //middleware
-  }
-
-  public function index(Request $request)
-  {
-    return SnippetLightResource::collection(
-      Snippet::withScopes($this->scopes())->latest('updated_at')->paginate($this->pagination)
-    );
-  }
-
-  public function home(Request $request)
-  {
-    // return $request->user()->id;
-    return SnippetLightResource::collection(
-      Snippet::where('user_id', $request->user()->id)->orWhere('is_public', true)->latest('updated_at')->paginate($this->pagination)
-    );
+    $this->middleware('auth:sanctum', ['except' => ['show', 'index']]);
   }
 
   public function show(Snippet $snippet, Request $request)
   {
-    //authorize
+    //authorization
+    $this->authorize('show', $snippet);
+
     $snippet->increment('viewed', 1);
     return new SnippetResource($snippet);
   }
 
   public function store(Request $request)
   {
+    //authorization by auth
+
     $snippet = $request->user()->snippets()->create();
     return new SnippetResource($snippet);
   }
 
   public function update(Snippet $snippet, Request $request)
   {
-    //authorize
+    //authorization
+    $this->authorize('update', $snippet);
 
     //validate
     $this->validate($request, [
@@ -68,8 +58,10 @@ class SnippetController extends Controller
 
   public function cover(Snippet $snippet, Request $request)
   {
-    //authorize
+    //authorization
+    $this->authorize('update', $snippet);
 
+    //validation
     $this->validate($request, [
       'media.*' => 'required|file|max:' . FileSize::max_file_size()['kb'] . '|mimetypes:' . implode(',', MimeTypes::$image)
     ]);
@@ -81,17 +73,9 @@ class SnippetController extends Controller
 
   public function destroy(Snippet $snippet, Request $request)
   {
-    //authorize
+    //authorization
+    $this->authorize('destroy', $snippet);
 
     $snippet->delete();
-  }
-
-  public function scopes()
-  {
-    return [
-      'searchText' => new SearchTextScope(),
-      'isPublic' => new PublicScope(),
-      'inStepsTitle' => new InStepsTitleScope(),
-    ];
   }
 }

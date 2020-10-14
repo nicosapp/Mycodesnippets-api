@@ -34,7 +34,7 @@ class Step extends Model
     });
   }
 
-  public function snippets()
+  public function snippet()
   {
     return $this->belongsTo(Snippet::class);
   }

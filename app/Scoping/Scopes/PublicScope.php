@@ -10,7 +10,7 @@ class PublicScope
   {
     if ($value)
       return $builder->where('is_public', $value);
-    else
-      return $builder->where('user_id', $request->user->id);
+    // else
+    //   return $builder->where('user_id', $request->user->id);
   }
 }
