@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('user', function (Request $request) {
   return new UserResource($request->user());
 });
 
@@ -43,6 +43,7 @@ Route::group(['prefix' => 'snippets', 'namespace' => 'Snippets'], function () {
   Route::patch('{snippet}', 'SnippetController@update');
   Route::delete('{snippet}', 'SnippetController@destroy');
   Route::post('{snippet}/cover', 'SnippetController@cover');
+
   Route::post('{snippet}/steps', 'StepController@store');
   Route::delete('{snippet}/steps/{step}', 'StepController@destroy');
 });
@@ -58,6 +59,19 @@ Route::group(['prefix' => 'users', 'namespace' => 'Users'], function () {
   Route::patch('{user}/profile', 'UserController@updateProfile');
   Route::patch('{user}/password', 'UserController@updatePassword');
   Route::post('{user}/avatar', 'UserController@avatar');
+
+  Route::get('{user}/snippets', 'UserController@snippets');
+});
+
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'dashboard', 'namespace' => 'Dashboard'], function () {
+  Route::get('statistics', 'DashboardController@statistics');
+  Route::get('lastUpdated', 'DashboardController@lastUpdated');
+  Route::get('lastCreated', 'DashboardController@lastCreated');
+  Route::get('mostViewed', 'DashboardController@mostViewed');
+  // Route::patch('{user}', 'UserController@update');
+  // Route::patch('{user}/profile', 'UserController@updateProfile');
+  // Route::patch('{user}/password', 'UserController@updatePassword');
+  // Route::post('{user}/avatar', 'UserController@avatar');
 
   Route::get('{user}/snippets', 'UserController@snippets');
 });

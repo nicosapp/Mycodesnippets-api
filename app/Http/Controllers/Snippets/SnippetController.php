@@ -42,7 +42,7 @@ class SnippetController extends Controller
   public function show(Snippet $snippet, Request $request)
   {
     //authorize
-
+    $snippet->increment('viewed', 1);
     return new SnippetResource($snippet);
   }
 
