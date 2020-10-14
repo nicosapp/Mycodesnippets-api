@@ -3,16 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use App\Models\Traits\WithThumbnail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-  use HasFactory, Notifiable;
+  use HasFactory, Notifiable, InteractsWithMedia, WithThumbnail;
 
+  public static $mediaCollectionName = "avatars";
   /**
    * The attributes that are mass assignable.
    *
@@ -76,5 +81,15 @@ class User extends Authenticatable
   public function infos()
   {
     return $this->hasOne(UserInfo::class);
+  }
+
+  public function avatar()
+  {
+    return $this->getMedia(self::$mediaCollectionName)->first();
+  }
+
+  public function registerMediaConversions(?Media $media = null): void
+  {
+    $this->thumbnail();
   }
 }

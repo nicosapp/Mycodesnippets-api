@@ -21,7 +21,9 @@ class SnippetResource extends JsonResource
       'is_public' => (bool) $this->is_public,
       'steps_count' => $this->steps->count(),
       'steps' => ['data' => StepResource::collection($this->steps)],
+      'cover' => $this->when($this->cover(), new MediaResource($this->cover())),
       'author' => [
+        'id' => $this->user->id,
         'name' => $this->user->name,
         'uuid' => $this->user->uuid
       ],

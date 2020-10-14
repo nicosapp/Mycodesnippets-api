@@ -8,6 +8,9 @@ class PublicScope
 {
   public function apply(Builder $builder, $value)
   {
-    return $builder->where('is_public', $value);
+    if ($value)
+      return $builder->where('is_public', $value);
+    else
+      return $builder->where('user_id', $request->user->id);
   }
 }

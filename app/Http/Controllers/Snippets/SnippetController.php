@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Snippets;
 
 
+use App\Media\FileSize;
 use App\Models\Snippet;
+use App\Media\MimeTypes;
 use Illuminate\Http\Request;
 use App\Scoping\Scopes\PublicScope;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MediaResource;
 use App\Http\Resources\SnippetResource;
 use App\Scoping\Scopes\SearchTextScope;
 use App\Scoping\Scopes\InStepsTitleScope;
@@ -14,6 +17,7 @@ use App\Http\Resources\SnippetLightResource;
 
 class SnippetController extends Controller
 {
+  protected $pagination = 3;
 
   public function __construct()
   {
@@ -23,7 +27,15 @@ class SnippetController extends Controller
   public function index(Request $request)
   {
     return SnippetLightResource::collection(
-      Snippet::latest('updated_at')->withScopes($this->scopes())->paginate(3)
+      Snippet::withScopes($this->scopes())->latest('updated_at')->paginate($this->pagination)
+    );
+  }
+
+  public function home(Request $request)
+  {
+    // return $request->user()->id;
+    return SnippetLightResource::collection(
+      Snippet::where('user_id', $request->user()->id)->orWhere('is_public', true)->latest('updated_at')->paginate($this->pagination)
     );
   }
 
@@ -52,6 +64,19 @@ class SnippetController extends Controller
     ]);
 
     $snippet->update($request->only('title', 'description', 'is_public'));
+  }
+
+  public function cover(Snippet $snippet, Request $request)
+  {
+    //authorize
+
+    $this->validate($request, [
+      'media.*' => 'required|file|max:' . FileSize::max_file_size()['kb'] . '|mimetypes:' . implode(',', MimeTypes::$image)
+    ]);
+    $snippet->clearMediaCollection(Snippet::$mediaCollectionName);
+    $media = $snippet->addMedia($request->file('media')[0])->setName('cover')->toMediaCollection(Snippet::$mediaCollectionName);
+
+    return new MediaResource($media);
   }
 
   public function destroy(Snippet $snippet, Request $request)

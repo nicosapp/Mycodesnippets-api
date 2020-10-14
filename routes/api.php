@@ -35,12 +35,14 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
   // Route::get('email/resend', 'ApiVerificationController@resend')->name('verificationapi.resend');
 });
 
-Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'snippets', 'namespace' => 'Snippets'], function () {
+Route::group(['prefix' => 'snippets', 'namespace' => 'Snippets'], function () {
   Route::post('', 'SnippetController@store');
   Route::get('', 'SnippetController@index');
+  Route::get('home', 'SnippetController@home');
   Route::get('{snippet}', 'SnippetController@show');
   Route::patch('{snippet}', 'SnippetController@update');
   Route::delete('{snippet}', 'SnippetController@destroy');
+  Route::post('{snippet}/cover', 'SnippetController@cover');
   Route::post('{snippet}/steps', 'StepController@store');
   Route::delete('{snippet}/steps/{step}', 'StepController@destroy');
 });
@@ -50,8 +52,16 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'steps', 'namespace' =
   Route::patch('{step}', 'StepController@update');
 });
 
-Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'users', 'namespace' => 'Users'], function () {
+Route::group(['prefix' => 'users', 'namespace' => 'Users'], function () {
   Route::get('{user}', 'UserController@show');
   Route::patch('{user}', 'UserController@update');
-  Route::patch('{user}/password', 'UserController@changePassword');
+  Route::patch('{user}/profile', 'UserController@updateProfile');
+  Route::patch('{user}/password', 'UserController@updatePassword');
+  Route::post('{user}/avatar', 'UserController@avatar');
+
+  Route::get('{user}/snippets', 'UserController@snippets');
+});
+
+Route::group(['prefix' => 'media', 'namespace' => 'Media'], function () {
+  Route::get('config', 'MediaConfigController@index');
 });

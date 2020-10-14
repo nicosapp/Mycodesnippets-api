@@ -4,13 +4,21 @@ namespace App\Models;
 
 use App\Scoping\Scoper;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use App\Models\Traits\CanBeScoped;
+use App\Models\Traits\WithThumbnail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\File;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Snippet extends Model
+class Snippet extends Model implements HasMedia
 {
-  use HasFactory;
+  use HasFactory, CanBeScoped, InteractsWithMedia, WithThumbnail;
+
+  public static $mediaCollectionName = 'snippets';
 
   protected $fillable = [
     'uuid',
@@ -49,9 +57,18 @@ class Snippet extends Model
     return $this->belongsTo(User::class);
   }
 
-  //Scope with scope
-  public function scopeWithScopes(Builder $builder, $scopes = [])
+  public function cover()
   {
-    return (new Scoper(request()))->apply($builder, $scopes);
+    return $this->getMedia(self::$mediaCollectionName)->first();
+  }
+
+  public function scopePublic(Builder $builder)
+  {
+    return $builder->where('is_public', true);
+  }
+
+  public function registerMediaConversions(?Media $media = null): void
+  {
+    $this->thumbnail();
   }
 }

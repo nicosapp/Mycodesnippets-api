@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Users;
 
 use App\Models\User;
+use App\Media\FileSize;
+use App\Models\Snippet;
+use App\Media\MimeTypes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserWithSnippetsResource;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\MediaResource;
+use App\Http\Resources\SnippetResource;
 
 class UserController extends Controller
 {
   public function show(User $user, Request $request)
   {
     //authorize
-    return new UserWithSnippetsResource($user);
+    return new UserResource($user);
   }
 
   public function update(User $user, Request $request)
@@ -33,7 +38,21 @@ class UserController extends Controller
       $user->infos()->update($request->only('firstname', 'lastname', 'description', 'phone_number'));
     }
   }
-  public function changePassword(User $user, Request $request)
+  public function updateProfile(User $user, Request $request)
+  {
+    // authorize
+    $this->validate($request, [
+      'name' => 'required|min:6',
+      'description' => 'nullable'
+    ]);
+
+    $user->update($request->only('name'));
+    if ($user->infos()->exists()) {
+      $user->infos()->update($request->only('description'));
+    }
+  }
+
+  public function updatePassword(User $user, Request $request)
   {
     // authorize
     $this->validate($request, [
@@ -42,5 +61,25 @@ class UserController extends Controller
     ]);
 
     $user->update($request->only('password'));
+  }
+
+
+  public function snippets(User $user, Request $request)
+  {
+    //authorize
+    return SnippetResource::collection(Snippet::where('user_id', $user->id)->public()->latest('updated_at')->paginate(3));
+  }
+
+  public function avatar(User $user, Request $request)
+  {
+    //authorize
+
+    $this->validate($request, [
+      'media.*' => 'required|file|max:' . FileSize::max_file_size()['kb'] . '|mimetypes:' . implode(',', MimeTypes::$image)
+    ]);
+    $user->clearMediaCollection(User::$mediaCollectionName);
+    $media = $user->addMedia($request->file('media')[0])->setName('avatar')->toMediaCollection(User::$mediaCollectionName);
+
+    return new MediaResource($media);
   }
 }

@@ -19,6 +19,9 @@ class UserResource extends JsonResource
       'email' => $this->email,
       'name' => $this->name,
       'uuid' => $this->uuid,
+      'created_at' => $this->created_at,
+      'snippets_count' => $this->snippets()->count(),
+      'avatar' => $this->when($this->avatar(), new MediaResource($this->avatar())),
       $this->mergeWhen(
         $this->infos()->exists(),
         [
