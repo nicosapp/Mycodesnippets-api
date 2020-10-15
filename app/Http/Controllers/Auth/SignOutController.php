@@ -17,7 +17,9 @@ class SignOutController extends Controller
   }
 
   /**
-   * 
+   * Undocumented function
+   *
+   * @return void
    */
   public function __invoke()
   {

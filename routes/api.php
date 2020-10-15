@@ -16,14 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
+Route::get('sanctum/csrf-cookie', function () {
+  return redirect('sanctum/csrf-cookie');
+});
 
 Route::middleware('auth:sanctum')->get('user', function (Request $request) {
   return new UserResource($request->user());
-});
-
-Route::get('sanctum/csrf-cookie', function () {
-  return redirect('sanctum/csrf-cookie');
 });
 
 Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {

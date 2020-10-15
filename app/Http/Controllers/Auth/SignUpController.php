@@ -21,7 +21,6 @@ class SignUpController extends Controller
     $user = User::create(
       $request->only('email', 'name', 'password')
     );
-    // $user->infos()->create();
 
     // $user->sendApiEmailVerificationNotification();
     // instead of sendEmailVerificationNotification
