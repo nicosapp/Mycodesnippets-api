@@ -34,9 +34,9 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
 });
 
 Route::group(['prefix' => 'snippets', 'namespace' => 'Snippets'], function () {
+  Route::get('titleAvailable', 'SnippetController@titleAvailable');
   Route::get('home', 'HomeSnippetsTimelineController');
   Route::get('', 'SearchSnippetsController');
-
   Route::post('', 'SnippetController@store');
   Route::get('{snippet}', 'SnippetController@show');
   Route::patch('{snippet}', 'SnippetController@update');

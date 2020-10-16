@@ -19,6 +19,7 @@ class Snippet extends Model implements HasMedia
   use HasFactory, CanBeScoped, InteractsWithMedia, WithThumbnail;
 
   public static $mediaCollectionName = 'snippets';
+  public static $pagination = 6;
 
   protected $fillable = [
     'uuid',

@@ -78,4 +78,20 @@ class SnippetController extends Controller
 
     $snippet->delete();
   }
+
+  public function titleAvailable(Request $request)
+  {
+    $this->validate($request, [
+      'title' => 'string',
+    ]);
+    $available = true;
+    if ($request->title)
+      $available = !$request->user()->snippets()->where('title', $request->title)->exists();
+
+    return response()->json([
+      'data' => [
+        'available' => $available
+      ]
+    ]);
+  }
 }
