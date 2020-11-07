@@ -6,7 +6,7 @@ use App\Scoping\Scoper;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use App\Models\Traits\CanBeScoped;
-use App\Models\Traits\WithThumbnail;
+use App\Models\Traits\WithMediaConversion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -16,7 +16,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Snippet extends Model implements HasMedia
 {
-  use HasFactory, CanBeScoped, InteractsWithMedia, WithThumbnail;
+  use HasFactory, CanBeScoped, InteractsWithMedia, WithMediaConversion;
 
   public static $mediaCollectionName = 'snippets';
   public static $pagination = 6;

@@ -5,7 +5,7 @@ namespace App\Models\Traits;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-trait WithThumbnail
+trait WithMediaConversion
 {
   use InteractsWithMedia;
 

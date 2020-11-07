@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
-use App\Models\Traits\WithThumbnail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Traits\WithMediaConversion;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements HasMedia
 {
-  use HasFactory, Notifiable, InteractsWithMedia, WithThumbnail;
+  use HasFactory, Notifiable, InteractsWithMedia, WithMediaConversion;
 
   public static $mediaCollectionName = "avatars";
   /**

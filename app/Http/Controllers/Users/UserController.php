@@ -42,7 +42,7 @@ class UserController extends Controller
     $user->update($request->only('email', 'name'));
 
     if ($user->infos()->exists()) {
-      $user->infos()->update($request->only('firstname', 'lastname', 'description', 'phone_number'));
+      $user->infos()->update($request->only('firstname', 'lastname', 'phone_number'));
     }
   }
   public function updateProfile(User $user, Request $request)
