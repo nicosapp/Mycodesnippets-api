@@ -7,6 +7,7 @@ use App\Media\FileSize;
 use App\Models\Snippet;
 use App\Media\MimeTypes;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Scoping\Scopes\PublicScope;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MediaResource;
@@ -48,7 +49,12 @@ class SnippetController extends Controller
 
     //validate
     $this->validate($request, [
-      'title' => 'nullable',
+      'title' => [
+        'nullable',
+        Rule::unique('snippets')->ignore($snippet->id)->where(function ($query) use ($request) {
+          return $query->where('user_id', $request->user()->id);
+        })
+      ],
       'description' => 'nullable',
       'is_public' => 'boolean|nullable'
     ]);
@@ -77,21 +83,5 @@ class SnippetController extends Controller
     $this->authorize('destroy', $snippet);
 
     $snippet->delete();
-  }
-
-  public function titleAvailable(Request $request)
-  {
-    $this->validate($request, [
-      'title' => 'string',
-    ]);
-    $available = true;
-    if ($request->title)
-      $available = !$request->user()->snippets()->where('title', $request->title)->exists();
-
-    return response()->json([
-      'data' => [
-        'available' => $available
-      ]
-    ]);
   }
 }
