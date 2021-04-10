@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  mycodesnippets-api:
+    build:
+      context: ./php-apache
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./php-apache/vhost.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./php-apache/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ../:/var/www/html
+    environment:
+      VIRTUAL_HOST: mycodesnippets.api
+    networks:
+      - nginx-proxy
+
+networks:
+  nginx-proxy:
+    external: true

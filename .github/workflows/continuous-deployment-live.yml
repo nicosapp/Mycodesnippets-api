@@ -51,3 +51,11 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
+#           RewriteEngine On
+
+# RewriteRule ^/api/ /api/public/index.php [L]
+
+# RewriteCond %{REQUEST_URI} !^/api/
+# RewriteCond %{REQUEST_URI} !^/api/public
+
+# RewriteRule ^ /client/%{REQUEST_URI} [L]

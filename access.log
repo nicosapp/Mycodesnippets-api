@@ -1,0 +1,4 @@
+172.28.0.2 - - [09/Apr/2021:16:48:34 +0000] "HEAD / HTTP/1.1" 200 173 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+172.28.0.2 - - [09/Apr/2021:16:48:38 +0000] "GET / HTTP/1.1" 200 458 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+172.28.0.2 - - [09/Apr/2021:16:48:38 +0000] "GET /favicon.ico HTTP/1.1" 200 259 "http://mycodesnippets.api/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+172.28.0.2 - - [09/Apr/2021:17:42:03 +0000] "GET / HTTP/1.1" 404 6815 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
